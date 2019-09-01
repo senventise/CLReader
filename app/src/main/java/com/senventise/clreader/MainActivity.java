@@ -3,6 +3,7 @@ package com.senventise.clreader;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -10,10 +11,20 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    SharedPreferences pref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        pref = getSharedPreferences("settings", MODE_PRIVATE);
+        boolean firstOpen = pref.getBoolean("firstOpen",true);
+        if (firstOpen){
+            // 第一次打开
+            SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
+            editor.putBoolean("firstOpen", false);
+            editor.putBoolean("night", false);
+            editor.apply();
+        }
     }
 
     // 技术讨论区
@@ -70,4 +81,12 @@ public class MainActivity extends AppCompatActivity {
         return super.dispatchKeyEvent(event);
     }
 
+    public void onNightClick(View view) {
+        SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
+        if (pref.getBoolean("night", false)) {
+            editor.putBoolean("night", false);
+        }else {
+            editor.putBoolean("night", true);
+        }
+    }
 }

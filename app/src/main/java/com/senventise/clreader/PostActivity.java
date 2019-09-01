@@ -53,6 +53,7 @@ public class PostActivity extends AppCompatActivity {
             FloorItemAdapter adapter = new FloorItemAdapter(floors);
             recyclerView.setAdapter(adapter);
             setTitle(post.getTitle());
+            System.out.println(post.getTitle());
         }
     };
 
@@ -93,6 +94,7 @@ class FloorItemAdapter extends RecyclerView.Adapter<FloorItemAdapter.ViewHolder>
         Floor floor = floors.get(position);
         holder.poster.setText(floor.getPoster());
         holder.content.setText(Html.fromHtml(floor.getContent()));
+        // TODO:图片支持
         holder.time.setText(floor.getTime());
     }
 

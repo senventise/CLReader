@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -23,28 +22,27 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-    <TextView
-        android:layout_marginStart="5dp"
-        android:textSize="12sp"
-        android:id="@+id/post_item_author"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="作者" />
+        <TextView
+            android:layout_marginStart="5dp"
+            android:textSize="12sp"
+            android:id="@+id/post_item_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="作者" />
 
-    <TextView
-        android:layout_marginStart="5dp"
-        android:textSize="12sp"
-        android:id="@+id/post_item_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="2018-1-1" />
+        <TextView
+            android:layout_marginStart="5dp"
+            android:textSize="12sp"
+            android:id="@+id/post_item_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2018-1-1" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <View
         android:layout_marginTop="6dp"
         android:background="#889f9f9f"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp">
-    </View>
+        android:layout_height="0.5dp"></View>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

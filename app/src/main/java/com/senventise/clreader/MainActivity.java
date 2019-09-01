@@ -30,6 +30,18 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void onDGEQZClick(View view) {
+        Intent i = new Intent(this,PostListActivity.class);
+        i.putExtra("node","DGEQZ");
+        startActivity(i);
+    }
+
+    public void onXDSWMClick(View view) {
+        Intent i = new Intent(this,PostListActivity.class);
+        i.putExtra("node","XSDWM");
+        startActivity(i);
+    }
+
     long lastTime = 0;
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {

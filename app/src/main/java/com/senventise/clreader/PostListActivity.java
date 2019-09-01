@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -40,12 +41,23 @@ public class PostListActivity extends AppCompatActivity {
             case "JSTL":
                 pl = new PostList(PostList.JSTL);
                 break;
+            case "DGEQZ":
+                pl = new PostList(PostList.DGEDQZ);
+                break;
+            case "XSDWM":
+                pl = new PostList(PostList.XSDDWM);
+                break;
         }
         Toast.makeText(getApplicationContext(),"加载中",Toast.LENGTH_SHORT).show();
         new Thread(networkTask).start();
         setListeners();
     }
 
+    public void mstartActivity(Intent i){
+        startActivity(i);
+    }
+
+    // 设置监听器
     private void setListeners(){
         // 滚动到底
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -138,7 +150,9 @@ class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHolder> {
                 int position = holder.getAdapterPosition();
                 System.out.println(position);
                 PostItem item = postItems.get(position);
-                Toast.makeText(v.getContext(),item.getPath(),Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(v.getContext(),PostActivity.class);
+                i.putExtra("path", item.getPath());
+                v.getContext().startActivity(i);
             }
         });
         return holder;

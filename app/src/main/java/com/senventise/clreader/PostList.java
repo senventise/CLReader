@@ -8,13 +8,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CLHelper {
-
-}
-
 class PostList{
     static final String CRWX = "https://www.t66y.com/thread0806.php?fid=20&page=";
     static final String JSTL = "https://www.t66y.com/thread0806.php?fid=7&page=";
+    static final String XSDDWM = "https://www.t66y.com/thread0806.php?fid=8&page=";
+    static final String DGEDQZ = "https://www.t66y.com/thread0806.php?fid=16&page=";
     private int currentPage = 0;
     private String url;
 

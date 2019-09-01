@@ -16,9 +16,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void onLiteratureClick(View view) {
+    // 技术讨论区
+    public void onJSTLClick(View view) {
         Intent i = new Intent(this,PostListActivity.class);
-        i.putExtra("forum","literature");
+        i.putExtra("node","JSTL");
+        startActivity(i);
+    }
+
+    // 文学交流区
+    public void onCRWXClick(View view) {
+        Intent i = new Intent(this,PostListActivity.class);
+        i.putExtra("node","CRWX");
         startActivity(i);
     }
 
@@ -49,4 +57,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.dispatchKeyEvent(event);
     }
+
 }

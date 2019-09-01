@@ -13,13 +13,14 @@
         android:layout_marginStart="160dp"
         android:layout_marginTop="150dp"
         android:layout_marginEnd="160dp"
-        android:onClick="onLiteratureClick"
+        android:onClick="onCRWXClick"
         android:text="文学交流区"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:onClick="onJSTLClick"
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

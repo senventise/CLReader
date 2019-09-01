@@ -5,7 +5,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CLHelper {
 
@@ -21,20 +22,22 @@ class PostList{
         this.url = url;
     }
 
-    public HashMap<String,String> getPostList(int page){
+    public List<PostItem> getPostList(int page){
+        List<PostItem> postItems = new ArrayList<>();
         currentPage = page;
         Document document = getSource(page);
-        HashMap<String,String> hm = new HashMap<>();
         for(Element i:document.getElementsByClass("tr3 t_one tac")){
             String title = i.select(".tal").select("h3").text();
+            String author = i.getElementsByClass("bl").text();
+            String time = i.getElementsByClass("f12").text();
             String path = i.select(".tal").select("a").attr("abs:href");
-            hm.put(title,path);
-            //System.out.println(title+": "+path);
+            PostItem postItem = new PostItem(title, author, time, path);
+            postItems.add(postItem);
         }
-        return hm;
+        return postItems;
     }
 
-    public HashMap<String,String> getNextPostList(){
+    public List<PostItem> getNextPostList(){
         currentPage += 1;
         return getPostList(currentPage);
     }
@@ -50,5 +53,35 @@ class PostList{
 
     public int getCurrentPage() {
         return currentPage;
+    }
+}
+
+class PostItem{
+    private String title;
+    private String author;
+    private String time;
+    private String path;
+
+    public PostItem(String title, String author, String time, String path){
+        this.title = title;
+        this.time = time;
+        this.author = author;
+        this.path = path;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public String getPath() {
+        return path;
     }
 }

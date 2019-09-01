@@ -1,90 +1,96 @@
 package com.senventise.clreader;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import java.util.ArrayList;
-import java.util.HashMap;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class PostListActivity extends AppCompatActivity {
 
-    ListView listView;
-    ArrayAdapter<String> aa;
-    SimpleAdapter adapter;
+    RecyclerView recyclerView;
     PostList pl;
     int page = 1;
+    PostItemAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_list);
-        listView = findViewById(R.id.post_list_list);
-        pl = new PostList(PostList.CRWX);
-        String forum = getIntent().getStringExtra("forum");
-        switch (forum){
-            case "literature":
-                createList("");
+        recyclerView = findViewById(R.id.post_list_recycler);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(PostListActivity.this);
+        recyclerView.setLayoutManager(layoutManager);
+        //adapter = new PostItemAdapter(new ArrayList<PostItem>());
+        //recyclerView.setAdapter(adapter);
+        String node = getIntent().getStringExtra("node");
+        switch (node){
+            case "CRWX":
+                pl = new PostList(PostList.CRWX);
                 break;
-            case "technique":
-                System.out.println("TECH");
+            case "JSTL":
+                pl = new PostList(PostList.JSTL);
                 break;
         }
+        Toast.makeText(getApplicationContext(),"加载中",Toast.LENGTH_SHORT);
+        new Thread(networkTask).start();
+        setListeners();
     }
 
-    private void createList(String url){
-        final String[] data = {"测试1","测试2","测试3","测试3","测试3","测试3","测试3","测试3","测试3","测试3","测试3","测试3","测试3","测试3","测试3","测试3","测试3","测试3","测试3"};
-        //HashMap<String,String> hm = pl.getPostList(1);
-        //String[] list = new String[40];
-        //hm.keySet().toArray(list);
-        //List arrList = new ArrayList(list);
-        //aa = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, list);
-        //adapter = new SimpleAdapter(this,hm,1,hm.keySet(),hm.keySet());
-        //listView.setAdapter(aa);
-        new Thread(networkTask).start();
-        listView.setOnItemLongClickListener(new AbsListView.OnItemLongClickListener() {
+    private void setListeners(){
+        // 滚动到底
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("list",i+"");
-                return false;
-            }
-        });
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
             }
 
             @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if ((firstVisibleItem + visibleItemCount) == totalItemCount) {
-                    View lastVisibleItemView = listView.getChildAt(listView.getChildCount() - 1);
-                    if (lastVisibleItemView != null && lastVisibleItemView.getBottom() == listView.getHeight()) {
-                        // list view 到底部
-                        addItemToList(data,aa);
-                    }
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!recyclerView.canScrollVertically(1)){
+                    Log.d("RecyclerView","滑动到底部");
+                    new Thread(loadNextPage).start();
                 }
             }
         });
     }
 
     @SuppressLint("HandlerLeak")
+    Handler nextPageHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            adapter.add((List<PostItem>)msg.obj);
+            Toast.makeText(getApplicationContext(),"已加载下一页",Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    Runnable loadNextPage = new Runnable() {
+        @Override
+        public void run() {
+            Message msg = new Message();
+            msg.obj = pl.getNextPostList();
+            nextPageHandler.sendMessage(msg);
+        }
+    };
+
+    @SuppressLint("HandlerLeak")
     Handler handler = new Handler(){
       @Override
       public void handleMessage(Message msg){
           super.handleMessage(msg);
-          aa = new ArrayAdapter<>(PostListActivity.this,android.R.layout.simple_list_item_1, msg.getData().getStringArrayList("key"));
-          listView.setAdapter(aa);
-          aa.notifyDataSetChanged();
+          adapter = new PostItemAdapter((List<PostItem>)msg.obj);
+          recyclerView.setAdapter(adapter);
       }
     };
 
@@ -92,19 +98,68 @@ public class PostListActivity extends AppCompatActivity {
         @Override
         public void run() {
             Message msg = new Message();
-            Bundle bundle = new Bundle();
-            //String[] list = new String[40];
-            HashMap<String,String> hm = pl.getPostList(page);
-            List<String> list = new ArrayList<String>(hm.keySet());
-            //hm.keySet().toArray(list);
-            bundle.putStringArrayList("key",new ArrayList(list));
-            msg.setData(bundle);
+            msg.obj = pl.getPostList(page);
             handler.sendMessage(msg);
         }
     };
+}
 
-    private void addItemToList(String[] item,ArrayAdapter<String> aa){
-        aa.addAll(item);
-        aa.notifyDataSetChanged();
+class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHolder> {
+    private List<PostItem> postItems;
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        View postItemView;
+        TextView title;
+        TextView author;
+        TextView time;
+
+        public ViewHolder(View view){
+            super(view);
+            postItemView = view;
+            title = view.findViewById(R.id.post_item_title);
+            author = view.findViewById(R.id.post_item_author);
+            time = view.findViewById(R.id.post_item_time);
+        }
+    }
+
+    public PostItemAdapter(List<PostItem> arg){
+        postItems = arg;
+    }
+
+    @NotNull
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
+        final ViewHolder holder = new ViewHolder(view);
+        // 点击事件
+        holder.postItemView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                int position = holder.getAdapterPosition();
+                System.out.println(position);
+                PostItem item = postItems.get(position);
+                Toast.makeText(v.getContext(),item.getPath(),Toast.LENGTH_SHORT).show();
+            }
+        });
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        PostItem postItem = postItems.get(position);
+        holder.title.setText(postItem.getTitle());
+        holder.author.setText(postItem.getAuthor());
+        holder.time.setText(postItem.getTime());
+    }
+
+    @Override
+    public int getItemCount() {
+        return postItems.size();
+    }
+
+    // 追加内容
+    public void add(List<PostItem> postItems){
+        this.postItems.addAll(postItems);
+        this.notifyDataSetChanged();
     }
 }

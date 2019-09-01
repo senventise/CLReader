@@ -41,7 +41,7 @@ public class PostListActivity extends AppCompatActivity {
                 pl = new PostList(PostList.JSTL);
                 break;
         }
-        Toast.makeText(getApplicationContext(),"加载中",Toast.LENGTH_SHORT);
+        Toast.makeText(getApplicationContext(),"加载中",Toast.LENGTH_SHORT).show();
         new Thread(networkTask).start();
         setListeners();
     }

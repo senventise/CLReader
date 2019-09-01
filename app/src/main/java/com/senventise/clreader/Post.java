@@ -49,6 +49,7 @@ public class Post {
     private void getSource(){
         try{
             document = Jsoup.connect(url).userAgent("Mozilla/5.0 (Linux; Android 9) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.111 Mobile Safari/537.36").get();
+            this.title = document.title();
         }catch (IOException e){
             e.printStackTrace();
         }

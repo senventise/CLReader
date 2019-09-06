@@ -29,12 +29,13 @@ public class Post {
     public List<Floor> getPostFloors(){
         List<Floor> floors = new ArrayList<>();
         for (Element e:document.getElementsByClass("t t2")) {
-            String poster = e.getElementsByTag("b").text();
-            String time = e.getElementsByClass("tipad").text().split(" ")[1];
+            String poster = e.getElementsByTag("b").get(0).text();
+            String time = e.getElementsByClass("tipad").text().replace("Posted:","").split(" ")[1]+" "+
+                    e.getElementsByClass("tipad").text().replace("Posted:","").split(" ")[2];
+            //System.out.println(e.getElementsByClass("tipad").html().split("Posted[ ]*:[\\d|\\-|:| ]+"));
             String content = e.getElementsByClass("tpc_content").html();
             Floor floor = new Floor(poster, time, content);
             floors.add(floor);
-            //System.out.println(floor);
         }
         return floors;
     }

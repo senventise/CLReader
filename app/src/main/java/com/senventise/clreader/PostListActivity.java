@@ -39,15 +39,19 @@ public class PostListActivity extends AppCompatActivity {
         String node = getIntent().getStringExtra("node");
         switch (node){
             case "CRWX":
+                setTitle("成人文学交流区");
                 pl = new PostList(PostList.CRWX);
                 break;
             case "JSTL":
+                setTitle("技术讨论区");
                 pl = new PostList(PostList.JSTL);
                 break;
             case "DGEQZ":
+                setTitle("达盖尔的旗帜");
                 pl = new PostList(PostList.DGEDQZ);
                 break;
             case "XSDWM":
+                setTitle("新时代的我们");
                 pl = new PostList(PostList.XSDDWM);
                 break;
         }

@@ -29,8 +29,11 @@ class PostList{
             String author = i.getElementsByClass("bl").text();
             String time = i.getElementsByClass("f12").text();
             String path = i.select(".tal").select("a").attr("abs:href");
-            PostItem postItem = new PostItem(title, author, time, path);
-            postItems.add(postItem);
+            // 屏蔽置顶项
+            if (document.getElementsByClass("tr3 t_one tac").indexOf(i) != 0){
+                PostItem postItem = new PostItem(title, author, time, path);
+                postItems.add(postItem);
+            }
         }
         return postItems;
     }

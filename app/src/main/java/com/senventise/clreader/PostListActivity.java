@@ -9,17 +9,22 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
+
 
 public class PostListActivity extends AppCompatActivity {
 
@@ -27,6 +32,7 @@ public class PostListActivity extends AppCompatActivity {
     PostList pl;
     int page = 1;
     PostItemAdapter adapter;
+    static String currentPath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +64,20 @@ public class PostListActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),"加载中",Toast.LENGTH_SHORT).show();
         new Thread(networkTask).start();
         setListeners();
+    }
+
+    public boolean onMenuUrlCopyClick(MenuItem item){
+        ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        cm.setPrimaryClip(ClipData.newPlainText("url", currentPath));
+        Toast.makeText(this,"已复制",Toast.LENGTH_SHORT).show();
+        return false;
+    }
+
+    public boolean onMenuBrowserClick(MenuItem item){
+        Uri uri = Uri.parse(currentPath);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
+        return false;
     }
 
     // 设置监听器
@@ -164,9 +184,12 @@ class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHolder> {
             public boolean onLongClick(View view) {
                 int position = holder.getAdapterPosition();
                 PostItem item = postItems.get(position);
-                ClipboardManager cm = (ClipboardManager) view.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                cm.setPrimaryClip(ClipData.newPlainText("url",item.getPath()));
-                Toast.makeText(view.getContext(),"已复制",Toast.LENGTH_SHORT).show();
+                PostListActivity.currentPath = item.getPath();
+                PopupMenu popupMenu = new PopupMenu(view.getContext(),view);
+                MenuInflater menuInflater = popupMenu.getMenuInflater();
+                menuInflater.inflate(R.menu.popup_menu,popupMenu.getMenu());
+                PostListActivity.currentPath = item.getPath();
+                popupMenu.show();
                 return false;
             }
         });

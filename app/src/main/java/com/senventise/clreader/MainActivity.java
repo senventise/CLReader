@@ -1,7 +1,6 @@
 package com.senventise.clreader;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,11 +8,19 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
+
+
 public class MainActivity extends AppCompatActivity {
+
 
     SharedPreferences pref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        pref = getSharedPreferences("settings", MODE_PRIVATE);
+        boolean isNightMode = pref.getBoolean("night",true);
+        if (isNightMode){
+            setTheme(R.style.AppThemeNight);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         pref = getSharedPreferences("settings", MODE_PRIVATE);
@@ -21,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         if (firstOpen){
             // 第一次打开
             SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
+            //初始化各种配置
             editor.putBoolean("firstOpen", false);
             editor.putBoolean("night", false);
             editor.apply();
@@ -85,8 +93,16 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
         if (pref.getBoolean("night", false)) {
             editor.putBoolean("night", false);
+            setTheme(R.style.AppTheme);
+            setContentView(R.layout.activity_main);
+            Toast.makeText(getApplicationContext(),"夜间模式已关闭",Toast.LENGTH_SHORT).show();
         }else {
             editor.putBoolean("night", true);
+            setTheme(R.style.AppThemeNight);
+            setContentView(R.layout.activity_main);
+            Toast.makeText(getApplicationContext(),"夜间模式已打开",Toast.LENGTH_SHORT).show();
         }
+        editor.apply();
     }
+
 }

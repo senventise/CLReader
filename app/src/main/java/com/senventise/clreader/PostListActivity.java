@@ -9,6 +9,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,13 +36,17 @@ public class PostListActivity extends AppCompatActivity {
     static String currentPath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // 是否为夜间模式
+        SharedPreferences pref = getSharedPreferences("settings", MODE_PRIVATE);
+        boolean isNightMode = pref.getBoolean("night",true);
+        if (isNightMode){
+            setTheme(R.style.AppThemeNight);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_list);
         recyclerView = findViewById(R.id.post_list_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(PostListActivity.this);
         recyclerView.setLayoutManager(layoutManager);
-        //adapter = new PostItemAdapter(new ArrayList<PostItem>());
-        //recyclerView.setAdapter(adapter);
         String node = getIntent().getStringExtra("node");
         switch (node){
             case "CRWX":
@@ -64,6 +69,7 @@ public class PostListActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),"加载中",Toast.LENGTH_SHORT).show();
         new Thread(networkTask).start();
         setListeners();
+        //this.registerForContextMenu(recyclerView);
     }
 
     public boolean onMenuUrlCopyClick(MenuItem item){
@@ -79,6 +85,7 @@ public class PostListActivity extends AppCompatActivity {
         startActivity(intent);
         return false;
     }
+
 
     // 设置监听器
     private void setListeners(){
@@ -142,7 +149,7 @@ public class PostListActivity extends AppCompatActivity {
 class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHolder> {
     private List<PostItem> postItems;
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder{
         View postItemView;
         TextView title;
         TextView author;
@@ -171,7 +178,6 @@ class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                //System.out.println(position);
                 PostItem item = postItems.get(position);
                 Intent i = new Intent(v.getContext(),PostActivity.class);
                 i.putExtra("path", item.getPath());
@@ -189,6 +195,7 @@ class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHolder> {
                 MenuInflater menuInflater = popupMenu.getMenuInflater();
                 menuInflater.inflate(R.menu.popup_menu,popupMenu.getMenu());
                 PostListActivity.currentPath = item.getPath();
+                view.setTag(item.getPath());
                 popupMenu.show();
                 return false;
             }

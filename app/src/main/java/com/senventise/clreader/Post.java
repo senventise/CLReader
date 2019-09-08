@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,46 +15,61 @@ public class Post {
     private int page = 1;
     private String url;
     private Document document = new Document(""); //页面源码
-    private String nextUrl; // 下一页URL
-    private String prevUrl; // 上一页URL
     private String tid;
     private String title;
+    public List<Floor> floors = new ArrayList<>();
     
     public Post(String url){
         this.url = url;
         String[] s = url.split("/");
         this.tid = s[s.length - 1];
-        getSource();
+        getSource(url);
     }
-    
+
+    // 第一页
     public List<Floor> getPostFloors(){
-        List<Floor> floors = new ArrayList<>();
         for (Element e:document.getElementsByClass("t t2")) {
             String poster = e.getElementsByTag("b").get(0).text();
             String time = e.getElementsByClass("tipad").text().replace("Posted:","").split(" ")[1]+" "+
                     e.getElementsByClass("tipad").text().replace("Posted:","").split(" ")[2];
-            //System.out.println(e.getElementsByClass("tipad").html().split("Posted[ ]*:[\\d|\\-|:| ]+"));
             String content = e.getElementsByClass("tpc_content").html();
             Floor floor = new Floor(poster, time, content);
             floors.add(floor);
         }
         return floors;
     }
-    
-    public String netxPage(){
-        StringBuilder sb = new StringBuilder("https://www.t66y.com/read.php?tid=");
-        sb.append(this.tid);
-        nextUrl = sb.toString();
-        return nextUrl;
+
+    private void getFloors(Document d){
+        floors = new ArrayList<>();
+        for (Element e:d.getElementsByClass("t t2")) {
+            String poster = e.getElementsByTag("b").get(0).text();
+            String time = e.getElementsByClass("tipad").text().replace("Posted:","").split(" ")[1]+" "+
+                    e.getElementsByClass("tipad").text().replace("Posted:","").split(" ")[2];
+            String content = e.getElementsByClass("tpc_content").html();
+            Floor floor = new Floor(poster, time, content);
+            floors.add(floor);
+        }
     }
     
-    private void getSource(){
+    public boolean nextPage(){
+        Elements elements = document.getElementsByClass("pages").first().getElementsByTag("a");
+        if (!elements.get(elements.size()-2).attr("class").equals("gray")) {
+            String nextUrl = elements.get(elements.size() - 2).attr("abs:href");
+            getFloors(getSource(nextUrl));
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    private Document getSource(String url){
         try{
             document = Jsoup.connect(url).userAgent("Mozilla/5.0 (Linux; Android 9) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.111 Mobile Safari/537.36").get();
             this.title = document.title();
         }catch (IOException e){
             e.printStackTrace();
         }
+        return document;
     }
 
     public String getTitle() {
@@ -86,7 +102,7 @@ public class Post {
         @NonNull
         @Override
         public String toString() {
-            return this.poster + this.content;
+            return this.poster + ": " + this.content;
         }
     }
 }

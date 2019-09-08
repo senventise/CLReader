@@ -7,6 +7,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,6 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.senventise.clreader.Post.*;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
@@ -120,6 +127,69 @@ public class PostActivity extends AppCompatActivity {
         });
     }
 
+    public static class PicassoImageGetter implements Html.ImageGetter {
+
+        private TextView textView = null;
+
+        public PicassoImageGetter() {
+
+        }
+
+        public PicassoImageGetter(TextView target) {
+            textView = target;
+        }
+
+        @Override
+        public Drawable getDrawable(String source) {
+            System.out.println(source);
+            BitmapDrawablePlaceHolder drawable = new BitmapDrawablePlaceHolder();
+            Picasso.get().load(source)
+                    .placeholder(R.drawable.ic_launcher_foreground)
+                    .into(drawable);
+            return drawable;
+        }
+
+        private class BitmapDrawablePlaceHolder extends BitmapDrawable implements Target {
+
+            protected Drawable drawable;
+
+            @Override
+            public void draw(final Canvas canvas) {
+                if (drawable != null) {
+                    drawable.draw(canvas);
+                }
+            }
+
+            public void setDrawable(Drawable drawable) {
+                this.drawable = drawable;
+                int width = drawable.getIntrinsicWidth();
+                int height = drawable.getIntrinsicHeight();
+                drawable.setBounds(0, 0, width, height);
+                setBounds(0, 0, width, height);
+                if (textView != null) {
+                    textView.setText(textView.getText());
+                }
+            }
+
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                setDrawable(new BitmapDrawable(MyApplication.getInstance().getResources(), bitmap));
+                System.out.println("23333");
+            }
+
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                System.out.println("Load Failed !");
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+
+        }
+    }
+
 }
 
 
@@ -155,8 +225,11 @@ class FloorItemAdapter extends RecyclerView.Adapter<FloorItemAdapter.ViewHolder>
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Floor floor = floors.get(position);
         holder.poster.setText(floor.getPoster());
-        holder.content.setText(Html.fromHtml(floor.getContent(),Html.FROM_HTML_MODE_COMPACT));
-        // TODO:图片支持
+        // TODO:GIF支持
+        // TODO:点击放大显示
+        PostActivity.PicassoImageGetter picassoImageGetter = new PostActivity.PicassoImageGetter(holder.content);
+        holder.content.setText(Html.fromHtml(floor.getContent(),Html.FROM_HTML_MODE_COMPACT,picassoImageGetter,null));
+        //System.out.println(floor.getContent());
         holder.time.setText(floor.getTime());
     }
 
@@ -170,3 +243,5 @@ class FloorItemAdapter extends RecyclerView.Adapter<FloorItemAdapter.ViewHolder>
         this.notifyDataSetChanged();
     }
 }
+
+

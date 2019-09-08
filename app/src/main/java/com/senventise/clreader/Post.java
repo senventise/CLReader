@@ -32,7 +32,7 @@ public class Post {
             String poster = e.getElementsByTag("b").get(0).text();
             String time = e.getElementsByClass("tipad").text().replace("Posted:","").split(" ")[1]+" "+
                     e.getElementsByClass("tipad").text().replace("Posted:","").split(" ")[2];
-            String content = e.getElementsByClass("tpc_content").html();
+            String content = e.getElementsByClass("tpc_content").html().replaceAll("data-src","src");
             Floor floor = new Floor(poster, time, content);
             floors.add(floor);
         }
@@ -52,13 +52,17 @@ public class Post {
     }
     
     public boolean nextPage(){
-        Elements elements = document.getElementsByClass("pages").first().getElementsByTag("a");
-        if (!elements.get(elements.size()-2).attr("class").equals("gray")) {
-            String nextUrl = elements.get(elements.size() - 2).attr("abs:href");
-            getFloors(getSource(nextUrl));
+        if (document == null){
             return true;
-        }else{
-            return false;
+        }else {
+            Elements elements = document.getElementsByClass("pages").first().getElementsByTag("a");
+            if (!elements.get(elements.size() - 2).attr("class").equals("gray")) {
+                String nextUrl = elements.get(elements.size() - 2).attr("abs:href");
+                getFloors(getSource(nextUrl));
+                return true;
+            } else {
+                return false;
+            }
         }
     }
     

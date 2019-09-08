@@ -197,6 +197,7 @@ class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHolder> {
                 PostListActivity.currentPath = item.getPath();
                 view.setTag(item.getPath());
                 popupMenu.show();
+                // TODO:收藏夹
                 return false;
             }
         });

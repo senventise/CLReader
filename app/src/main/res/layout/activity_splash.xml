@@ -4,31 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/backgroundColor"
     tools:context=".SplashActivity">
 
     <TextView
         android:id="@+id/splash_url_test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:textColor="?attr/textColor"
         android:text="Test Url: t66y.com"
-        app:layout_constraintEnd_toEndOf="@+id/splash_fingerprint_image"
-        app:layout_constraintHorizontal_bias="0.527"
-        app:layout_constraintStart_toStartOf="@+id/splash_fingerprint_image"
-        app:layout_constraintTop_toTopOf="parent">
-    </TextView>
-
-    <ImageView
-        android:visibility="invisible"
-        android:id="@+id/splash_fingerprint_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/fingerprint" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

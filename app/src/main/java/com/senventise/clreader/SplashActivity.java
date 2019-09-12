@@ -98,7 +98,7 @@ class UrlValid {
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
-            System.out.println(response.body());
+            Log.d("connection",response.code()+"");
             return true;
         }
     }

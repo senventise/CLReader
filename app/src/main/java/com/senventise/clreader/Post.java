@@ -55,12 +55,17 @@ public class Post {
         if (document == null){
             return true;
         }else {
-            Elements elements = document.getElementsByClass("pages").first().getElementsByTag("a");
-            if (!elements.get(elements.size() - 2).attr("class").equals("gray")) {
-                String nextUrl = elements.get(elements.size() - 2).attr("abs:href");
-                getFloors(getSource(nextUrl));
-                return true;
-            } else {
+            try {
+                Elements elements = document.getElementsByClass("pages").first().getElementsByTag("a");
+                if (!elements.get(elements.size() - 2).attr("class").equals("gray")) {
+                    String nextUrl = elements.get(elements.size() - 2).attr("abs:href");
+                    getFloors(getSource(nextUrl));
+                    return true;
+                } else {
+                    return false;
+                }
+            }catch (NullPointerException e){
+                // 没有下一页了
                 return false;
             }
         }

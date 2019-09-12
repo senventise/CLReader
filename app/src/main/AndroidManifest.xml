@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PostActivity"></activity>
+        <activity android:name=".FavoritesActivity"></activity>
+        <activity android:name=".PostActivity" />
         <activity android:name=".PostListActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>

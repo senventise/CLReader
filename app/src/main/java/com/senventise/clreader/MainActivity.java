@@ -61,6 +61,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void onFavoritesClick(View view) {
+        Intent i = new Intent(this,FavoritesActivity.class);
+        startActivity(i);
+    }
+
+
+
     long lastTime = 0;
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {

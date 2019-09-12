@@ -4,6 +4,9 @@
     <item android:id="@+id/copyUrl"
         android:onClick="onMenuUrlCopyClick"
         android:title="复制链接"/>
+    <item android:id="@+id/addToFavorite"
+        android:onClick="onMenuAddToFavoriteClick"
+        android:title="收藏"/>
     <item android:id="@+id/openInBrowser"
         android:onClick="onMenuBrowserClick"
         android:title="浏览器打开"/>

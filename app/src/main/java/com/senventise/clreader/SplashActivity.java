@@ -6,6 +6,7 @@ import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
@@ -27,6 +28,12 @@ public class SplashActivity extends AppCompatActivity {
     private TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // 是否为夜间模式
+        SharedPreferences pref = getSharedPreferences("settings", MODE_PRIVATE);
+        boolean isNightMode = pref.getBoolean("night",true);
+        if (isNightMode){
+            setTheme(R.style.AppThemeNight);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         init();

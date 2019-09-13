@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/fav_copy_path"
+        android:onClick="onFavCopyPathClick"
+        android:title="复制 URL">
+    </item>
+    <item android:id="@+id/fav_delete"
+        android:onClick="onFavDeleteClick"
+        android:title="删除">
+    </item>
+</menu>

@@ -1,15 +1,23 @@
 package com.senventise.clreader;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
@@ -18,16 +26,14 @@ import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FavoritesActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-
+    static String currentPath;
+    static String currentTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // 是否为夜间模式
@@ -47,27 +53,53 @@ public class FavoritesActivity extends AppCompatActivity {
 
     private List<FavItem> loadFav(){
         List<FavItem> items = new ArrayList<>();
-        try {
-            FileInputStream fileInputStream = openFileInput("fav.lst");
-            byte[] buffer = new byte[1024];
-            fileInputStream.read(buffer);
-            fileInputStream.close();
-            String content = new String(buffer, "UTF-8");
-            String[] str = content.split("\n");
-            for (int i = 0;i<str.length-1;i++){
-                String title,path;
-                title = str[i].split("::")[0];
-                path = str[i].split("::")[1];
-                FavItem item = new FavItem(title, path);
-                items.add(item);
-            }
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        }catch (IOException e){
-            Toast.makeText(this,"读取文件出现错误", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
+        MySqlHelper mySqlHelper = new MySqlHelper(this, "data.db", null, 1);
+        SQLiteDatabase db = mySqlHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from fav", null);
+        if (cursor.moveToFirst()){
+            do {
+                String title = cursor.getString(cursor.getColumnIndex("title"));
+                String path = cursor.getString(cursor.getColumnIndex("path"));
+                items.add(new FavItem(title, path));
+            }while (cursor.moveToNext());
         }
+        cursor.close();
+        db.close();
         return items;
+    }
+
+    public boolean onFavCopyPathClick(MenuItem menuItem){
+        ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        cm.setPrimaryClip(ClipData.newPlainText("url", currentPath));
+        Toast.makeText(this,"已复制",Toast.LENGTH_SHORT).show();
+        return false;
+    }
+
+    public boolean onFavDeleteClick(final MenuItem menuItem){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(FavoritesActivity.this);
+        dialog.setTitle("确认删除");
+        dialog.setMessage("是否要删除 \"" + currentTitle + "\"?");
+        dialog.setCancelable(false);
+        dialog.setPositiveButton("是", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                MySqlHelper mySqlHelper = new MySqlHelper(MyApplication.getInstance(), "data.db", null, 1);
+                SQLiteDatabase database = mySqlHelper.getWritableDatabase();
+                database.delete("fav", "path=?", new String[]{currentPath});
+                Toast.makeText(MyApplication.getInstance(),"已删除",Toast.LENGTH_SHORT).show();
+                FavoriteItemAdapter adapter = new FavoriteItemAdapter(loadFav());
+                recyclerView.setAdapter(adapter);
+                database.close();
+            }
+        });
+        dialog.setNegativeButton("否", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        dialog.show();
+        return false;
     }
 }
 
@@ -104,7 +136,21 @@ class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapter.ViewH
                 Intent i = new Intent(v.getContext(),PostActivity.class);
                 i.putExtra("path", item.getPath());
                 v.getContext().startActivity(i);
-                System.out.println(item.getPath());
+            }
+        });
+        // 长按
+        holder.favItemView.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View view) {
+                int position = holder.getAdapterPosition();
+                FavItem item = favItems.get(position);
+                PopupMenu popupMenu = new PopupMenu(view.getContext(),view);
+                MenuInflater menuInflater = popupMenu.getMenuInflater();
+                menuInflater.inflate(R.menu.fav_popup_menu,popupMenu.getMenu());
+                FavoritesActivity.currentPath = item.getPath();
+                FavoritesActivity.currentTitle = item.getTitle();
+                popupMenu.show();
+                return true;
             }
         });
         return holder;
@@ -121,11 +167,6 @@ class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapter.ViewH
         return favItems.size();
     }
 
-    // 追加内容
-    public void add(List<FavItem> favItems){
-        this.favItems.addAll(favItems);
-        this.notifyDataSetChanged();
-    }
 }
 
 class FavItem{

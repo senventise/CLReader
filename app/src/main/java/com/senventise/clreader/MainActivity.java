@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Toast;
 
 
-
 public class MainActivity extends AppCompatActivity {
 
 
@@ -32,8 +31,11 @@ public class MainActivity extends AppCompatActivity {
             editor.putBoolean("firstOpen", false);
             editor.putBoolean("night", false);
             editor.apply();
+            MySqlHelper mySqlHelper = new MySqlHelper(this, "data.db", null, 1);
+            mySqlHelper.getWritableDatabase();
         }
     }
+
 
     // 技术讨论区
     public void onJSTLClick(View view) {

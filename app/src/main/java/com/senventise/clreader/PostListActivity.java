@@ -7,9 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,6 +36,7 @@ public class PostListActivity extends AppCompatActivity {
     int page = 1;
     PostItemAdapter adapter;
     static String currentPath;
+    static String currentTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // 是否为夜间模式
@@ -69,7 +72,7 @@ public class PostListActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),"加载中",Toast.LENGTH_SHORT).show();
         new Thread(networkTask).start();
         setListeners();
-        //this.registerForContextMenu(recyclerView);
+        // TODO:下拉刷新
     }
 
     public boolean onMenuUrlCopyClick(MenuItem item){
@@ -86,6 +89,21 @@ public class PostListActivity extends AppCompatActivity {
         return false;
     }
 
+    public boolean onMenuAddToFavoriteClick(MenuItem item){
+        addToFavorite(currentTitle, currentPath);
+        return false;
+    }
+
+    private void addToFavorite(String title, String path){
+        MySqlHelper mySqlHelper = new MySqlHelper(this, "data.db", null, 1);
+        SQLiteDatabase db =  mySqlHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("title", title);
+        contentValues.put("path", path);
+        db.insert("fav", null, contentValues);
+        Toast.makeText(this, "已添加", Toast.LENGTH_SHORT).show();
+        db.close();
+    }
 
     // 设置监听器
     private void setListeners(){
@@ -190,15 +208,13 @@ class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHolder> {
             public boolean onLongClick(View view) {
                 int position = holder.getAdapterPosition();
                 PostItem item = postItems.get(position);
-                PostListActivity.currentPath = item.getPath();
                 PopupMenu popupMenu = new PopupMenu(view.getContext(),view);
                 MenuInflater menuInflater = popupMenu.getMenuInflater();
                 menuInflater.inflate(R.menu.popup_menu,popupMenu.getMenu());
                 PostListActivity.currentPath = item.getPath();
-                view.setTag(item.getPath());
+                PostListActivity.currentTitle = item.getTitle();
                 popupMenu.show();
-                // TODO:收藏夹
-                return false;
+                return true;
             }
         });
         return holder;

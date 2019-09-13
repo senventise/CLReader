@@ -1,21 +1,15 @@
 package com.senventise.clreader;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.CancellationSignal;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 

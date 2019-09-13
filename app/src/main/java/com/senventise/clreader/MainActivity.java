@@ -68,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void onHistoryClick(View view) {
+        Intent i = new Intent(this,HistoryActivity.class);
+        startActivity(i);
+    }
+
 
 
     long lastTime = 0;

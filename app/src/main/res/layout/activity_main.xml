@@ -24,7 +24,7 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:onClick="onJSTLClick"
         android:text="@string/jstlq"
         app:layout_constraintEnd_toEndOf="@+id/button"
@@ -48,7 +48,7 @@
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:onClick="onXDSWMClick"
         android:text="@string/xsddwm"
         app:layout_constraintEnd_toEndOf="@+id/button"
@@ -59,7 +59,7 @@
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="10dp"
         android:onClick="onDGEQZClick"
         android:text="@string/dgedqz"
         app:layout_constraintEnd_toEndOf="@+id/button"
@@ -70,22 +70,33 @@
         android:id="@+id/button5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:onClick="onNightClick"
         android:text="@string/nightMode"
+        app:layout_constraintEnd_toEndOf="@+id/button"
+        app:layout_constraintStart_toStartOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/button7" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="onFavoritesClick"
+        android:text="@string/favorite"
         app:layout_constraintEnd_toEndOf="@+id/button"
         app:layout_constraintStart_toStartOf="@+id/button"
         app:layout_constraintTop_toBottomOf="@+id/button3" />
 
     <Button
-        android:onClick="onFavoritesClick"
-        android:id="@+id/button6"
+        android:onClick="onHistoryClick"
+        android:id="@+id/button7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/favorite"
+        android:layout_marginTop="10dp"
+        android:text="@string/history"
         app:layout_constraintEnd_toEndOf="@+id/button"
         app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/button5" />
+        app:layout_constraintTop_toBottomOf="@+id/button6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

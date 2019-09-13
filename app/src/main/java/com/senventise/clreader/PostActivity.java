@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -58,8 +60,7 @@ public class PostActivity extends AppCompatActivity {
         @Override
         public void run() {
             Message msg = new Message();
-            Post post = new Post(path);
-            msg.obj = post;
+            msg.obj = new Post(path);
             postContentHandler.sendMessage(msg);
         }
     };
@@ -74,6 +75,7 @@ public class PostActivity extends AppCompatActivity {
             adapter = new FloorItemAdapter(floors);
             recyclerView.setAdapter(adapter);
             setTitle(post.getTitle());
+            addToHistory(post.getTitle(), path);
         }
     };
 
@@ -174,7 +176,6 @@ public class PostActivity extends AppCompatActivity {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                 setDrawable(new BitmapDrawable(MyApplication.getInstance().getResources(), bitmap));
-                System.out.println("23333");
             }
 
             @Override
@@ -188,6 +189,24 @@ public class PostActivity extends AppCompatActivity {
             }
 
         }
+    }
+
+    private void addToHistory(String title, String path){
+        deleteExistHistory(path);
+        MySqlHelper mySqlHelper = new MySqlHelper(this, "data.db", null, 1);
+        SQLiteDatabase db =  mySqlHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("title", title);
+        contentValues.put("path", path);
+        db.insert("history", null, contentValues);
+        db.close();
+    }
+
+    private void deleteExistHistory(String path){
+        MySqlHelper mySqlHelper = new MySqlHelper(this, "data.db", null, 1);
+        SQLiteDatabase db = mySqlHelper.getWritableDatabase();
+        db.delete("history", "path=?",new String[]{path});
+        db.close();
     }
 
 }
@@ -217,8 +236,7 @@ class FloorItemAdapter extends RecyclerView.Adapter<FloorItemAdapter.ViewHolder>
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.floor_item, parent, false);
-        ViewHolder holder = new ViewHolder(view);
-        return holder;
+        return new ViewHolder(view);
     }
 
     @Override

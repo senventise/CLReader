@@ -21,6 +21,7 @@ import android.widget.Toast;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HistoryActivity extends AppCompatActivity {
@@ -69,6 +70,8 @@ public class HistoryActivity extends AppCompatActivity {
         }
         cursor.close();
         db.close();
+        // 倒序
+        Collections.reverse(items);
         return items;
     }
 }

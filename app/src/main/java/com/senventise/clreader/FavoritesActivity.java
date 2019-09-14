@@ -27,6 +27,7 @@ import android.widget.Toast;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FavoritesActivity extends AppCompatActivity {
@@ -65,6 +66,7 @@ public class FavoritesActivity extends AppCompatActivity {
         }
         cursor.close();
         db.close();
+        Collections.reverse(items);
         return items;
     }
 

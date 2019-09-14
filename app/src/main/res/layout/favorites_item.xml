@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_marginBottom="6dp"
-    android:layout_marginTop="6dp"
     android:background="@drawable/list_item_touch_background"
     android:layout_height="wrap_content">
 
@@ -20,5 +18,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
     </androidx.appcompat.widget.AppCompatTextView>
+
+    <View
+        android:layout_marginTop="10dp"
+        android:background="@color/bitGray"
+        android:layout_width="match_parent"
+        android:layout_height="0.4dp"></View>
 
 </LinearLayout>

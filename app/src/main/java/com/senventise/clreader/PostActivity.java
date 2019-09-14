@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ import java.util.List;
 
 public class PostActivity extends AppCompatActivity {
     RecyclerView recyclerView;
+    ProgressBar progressBar;
     String path;
     Post post;
     Boolean loading = false; // 防止疯狂加载
@@ -53,6 +55,7 @@ public class PostActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         setListeners();
         path = getIntent().getStringExtra("path");
+        progressBar = findViewById(R.id.post_progress_bar);
         new Thread(getPostContent).start();
     }
 
@@ -76,6 +79,7 @@ public class PostActivity extends AppCompatActivity {
             recyclerView.setAdapter(adapter);
             setTitle(post.getTitle());
             addToHistory(post.getTitle(), path);
+            progressBar.setVisibility(View.INVISIBLE);
         }
     };
 

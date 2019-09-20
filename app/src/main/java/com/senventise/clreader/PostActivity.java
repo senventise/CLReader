@@ -147,7 +147,6 @@ public class PostActivity extends AppCompatActivity {
 
         @Override
         public Drawable getDrawable(String source) {
-            System.out.println(source);
             BitmapDrawablePlaceHolder drawable = new BitmapDrawablePlaceHolder();
             Picasso.get().load(source)
                     .placeholder(R.drawable.ic_launcher_foreground)

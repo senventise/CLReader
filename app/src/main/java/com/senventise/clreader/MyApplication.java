@@ -2,6 +2,7 @@ package com.senventise.clreader;
 
 import android.app.Application;
 
+
 public class MyApplication extends Application {
     private static MyApplication instance;
 

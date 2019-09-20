@@ -18,7 +18,7 @@ public class Post {
     private String tid;
     private String title;
     public List<Floor> floors = new ArrayList<>();
-    
+
     public Post(String url){
         this.url = url;
         String[] s = url.split("/");
@@ -32,7 +32,9 @@ public class Post {
             String poster = e.getElementsByTag("b").get(0).text();
             String time = e.getElementsByClass("tipad").text().replace("Posted:","").split(" ")[1]+" "+
                     e.getElementsByClass("tipad").text().replace("Posted:","").split(" ")[2];
-            String content = e.getElementsByClass("tpc_content").html().replaceAll("data-src","src");
+            Elements elements = e.getElementsByClass("tpc_content");
+            String content = elements.html().replaceAll("data-src","src");
+            content = content.replaceAll("<input","<img");
             Floor floor = new Floor(poster, time, content);
             floors.add(floor);
         }

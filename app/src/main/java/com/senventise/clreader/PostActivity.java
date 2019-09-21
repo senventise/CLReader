@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -54,10 +55,20 @@ public class PostActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(PostActivity.this);
         recyclerView.setLayoutManager(layoutManager);
         setListeners();
-        path = getIntent().getStringExtra("path");
+        String action = getIntent().getAction();
+        if (action != null && action.equals(Intent.ACTION_VIEW)){
+            path = getIntent().getDataString();
+            if (path != null && path.contains("htm_mob")){
+                path = path.replace("htm_mob", "htm_data");
+            }
+        } else {
+            path = getIntent().getStringExtra("path");
+        }
         progressBar = findViewById(R.id.post_progress_bar);
         new Thread(getPostContent).start();
     }
+
+
 
     Runnable getPostContent = new Runnable() {
         @Override

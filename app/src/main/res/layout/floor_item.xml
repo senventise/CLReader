@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_marginBottom="24dp"
     android:id="@+id/floor_item"
-    android:background="?attr/backgroundColor"
+    android:background="?attr/readBackground"
     android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.LinearLayoutCompat

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -35,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
             mySqlHelper.getWritableDatabase();
         }
     }
-
 
     // 技术讨论区
     public void onJSTLClick(View view) {
@@ -73,6 +73,26 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void onSettingClick(View view) {
+        Toast.makeText(this, "嘤嘤嘤，主人还没把我开发完哦~", Toast.LENGTH_SHORT).show();
+    }
+
+    public void onNightClick(View view) {
+        SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
+        if (pref.getBoolean("night", false)) {
+            editor.putBoolean("night", false);
+            setTheme(R.style.AppTheme);
+            setContentView(R.layout.activity_main);
+            Toast.makeText(getApplicationContext(),"夜间模式已关闭",Toast.LENGTH_SHORT).show();
+        }else {
+            editor.putBoolean("night", true);
+            setTheme(R.style.AppThemeNight);
+            setContentView(R.layout.activity_main);
+            Toast.makeText(getApplicationContext(),"夜间模式已打开",Toast.LENGTH_SHORT).show();
+        }
+        editor.apply();
+    }
+
 
 
     long lastTime = 0;
@@ -101,22 +121,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.dispatchKeyEvent(event);
-    }
-
-    public void onNightClick(View view) {
-        SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
-        if (pref.getBoolean("night", false)) {
-            editor.putBoolean("night", false);
-            setTheme(R.style.AppTheme);
-            setContentView(R.layout.activity_main);
-            Toast.makeText(getApplicationContext(),"夜间模式已关闭",Toast.LENGTH_SHORT).show();
-        }else {
-            editor.putBoolean("night", true);
-            setTheme(R.style.AppThemeNight);
-            setContentView(R.layout.activity_main);
-            Toast.makeText(getApplicationContext(),"夜间模式已打开",Toast.LENGTH_SHORT).show();
-        }
-        editor.apply();
     }
 
 }

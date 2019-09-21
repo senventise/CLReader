@@ -2,101 +2,114 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="?attr/backgroundColor"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/mainBackground"
     tools:context=".MainActivity">
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginEnd="160dp"
-        android:onClick="onCRWXClick"
-        android:text="@string/wxjlq"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:onClick="onJSTLClick"
-        android:text="@string/jstlq"
-        app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
-        android:textSize="20sp"
-        android:textColor="?attr/textColor"
+        android:layout_marginTop="60dp"
         android:text="@string/main_title"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintHorizontal_bias="0.482"
-        app:layout_constraintStart_toStartOf="@+id/button" />
+        android:textColor="?attr/textColor"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button3"
+    <com.senventise.clreader.MyView.MCardview
+        android:clickable="true"
+        android:focusable="true"
+        app:onClick="onCRWXClick"
+        android:id="@+id/MCardview"
+        android:layout_width="350dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="30dp"
+        app:cardBackgroundColor="?attr/backgroundColor"
+        app:cardCornerRadius="6dp"
+        app:cardDesp="草榴文學區 歡迎各位發表"
+        app:cardTitle="成人文学交流区"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+    </com.senventise.clreader.MyView.MCardview>
+
+    <com.senventise.clreader.MyView.MCardview
+        app:onClick="onJSTLClick"
+        android:id="@+id/MCardview2"
+        android:layout_width="350dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="?attr/backgroundColor"
+        app:cardCornerRadius="6dp"
+        app:cardDesp="日常生活 興趣交流 時事經濟 求助求檔 會員閑談吹水區"
+        app:cardTitle="技术讨论区"
+        app:layout_constraintEnd_toEndOf="@+id/MCardview"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/MCardview"
+        app:layout_constraintTop_toBottomOf="@+id/MCardview" />
+
+    <com.senventise.clreader.MyView.MCardview
+        app:onClick="onFavoritesClick"
+        android:id="@+id/MCardview3"
+        android:layout_width="350dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="?attr/backgroundColor"
+        app:cardCornerRadius="6dp"
+        app:cardDesp="你收藏的内容都在这里哒~"
+        app:cardTitle="收藏夹"
+        app:layout_constraintEnd_toEndOf="@+id/MCardview2"
+        app:layout_constraintStart_toStartOf="@+id/MCardview2"
+        app:layout_constraintTop_toBottomOf="@+id/MCardview2" />
+
+    <com.senventise.clreader.MyView.MCardview
+        app:onClick="onHistoryClick"
+        android:id="@+id/MCardview4"
+        android:layout_width="350dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="?attr/backgroundColor"
+        app:cardCornerRadius="6dp"
+        app:cardDesp="好多羞羞的东西呀~"
+        app:cardTitle="历史记录"
+        app:layout_constraintEnd_toEndOf="@+id/MCardview3"
+        app:layout_constraintStart_toStartOf="@+id/MCardview3"
+        app:layout_constraintTop_toBottomOf="@+id/MCardview3" />
+
+    <com.senventise.clreader.MyView.MCardview
+        app:onClick="onSettingClick"
+        android:id="@+id/MCardview5"
+        android:layout_width="350dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="?attr/backgroundColor"
+        app:cardCornerRadius="6dp"
+        app:cardDesp="快来调教我吧~"
+        app:cardTitle="设置"
+        app:layout_constraintEnd_toEndOf="@+id/MCardview4"
+        app:layout_constraintStart_toStartOf="@+id/MCardview4"
+        app:layout_constraintTop_toBottomOf="@+id/MCardview4" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        app:backgroundTint="#FFFFFFFF"
+        app:rippleColor="#FFFFFFFF"
+        android:id="@+id/floatingActionButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:onClick="onXDSWMClick"
-        android:text="@string/xsddwm"
-        app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/button4" />
-
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:onClick="onDGEQZClick"
-        android:text="@string/dgedqz"
-        app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="28dp"
         android:onClick="onNightClick"
-        android:text="@string/nightMode"
-        app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/button7" />
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="?attr/nightMode" />
 
-    <Button
-        android:id="@+id/button6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:onClick="onFavoritesClick"
-        android:text="@string/favorite"
-        app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
-
-    <Button
-        android:onClick="onHistoryClick"
-        android:id="@+id/button7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/history"
-        app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/button6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,8 +6,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="textColor">@color/textColor</item>
-        <item name="backgroundColor">@color/background</item>
+        <item name="textColor">#FF1C1C1C</item>
+        <item name="backgroundColor">#FFFFFFFF</item>
+        <item name="mainBackground">#FFECECEC</item>
+        <item name="readBackground">#FFECECEC</item>
+        <item name="nightMode">@drawable/moon</item>
     </style>
 
     <style name="AppThemeNight" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -15,8 +18,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="textColor">@color/background</item>
-        <item name="backgroundColor">@color/textColor</item>
+        <item name="textColor">#FFECECEC</item>
+        <item name="backgroundColor">#FF212121</item>
+        <item name="mainBackground">#FF161616</item>
+        <item name="readBackground">#FF1C1C1C</item>
+        <item name="nightMode">@drawable/sun</item>
     </style>
 
 </resources>

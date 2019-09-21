@@ -1,0 +1,40 @@
+<androidx.cardview.widget.CardView
+    android:clickable="true"
+    android:background="@drawable/list_item_touch_background"
+    app:cardBackgroundColor="?attr/backgroundColor"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/cardLayout"
+        android:background="@drawable/list_item_touch_background"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/cardTitle"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="6dp"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wxjlq"
+            android:textColor="?attr/textColor" />
+
+        <TextView
+            android:id="@+id/cardDesp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="草榴文學區 歡迎各位發表"
+            android:textColor="?attr/textColor" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</androidx.cardview.widget.CardView>

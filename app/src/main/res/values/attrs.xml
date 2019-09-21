@@ -2,4 +2,13 @@
 <resources>
     <attr name="textColor" format="color|reference" />
     <attr name="backgroundColor" format="color|reference" />
+    <attr name="mainBackground" format="color|reference" />
+    <attr name="readBackground" format="color|reference" />
+    <attr name="nightMode" format="reference" />
+
+    <declare-styleable name="MCardview">
+        <attr name="cardTitle" />
+        <attr name="cardDesp" />
+        <attr name="onClick" />
+    </declare-styleable>
 </resources>

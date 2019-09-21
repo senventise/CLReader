@@ -5,9 +5,18 @@ import android.app.Application;
 
 public class MyApplication extends Application {
     private static MyApplication instance;
+    private static String rootUrl;
 
     public static MyApplication getInstance(){
         return instance;
+    }
+
+    public static void setRootUrl(String rootUrl) {
+        MyApplication.rootUrl = rootUrl;
+    }
+
+    public static String getRootUrl() {
+        return rootUrl;
     }
 
     @Override

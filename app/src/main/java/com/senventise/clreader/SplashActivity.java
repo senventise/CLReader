@@ -8,11 +8,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.widget.TextView;
 
-import java.io.IOException;
+import com.google.gson.Gson;
 
+import java.io.IOException;
+import java.util.Objects;
+
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -85,15 +88,30 @@ public class SplashActivity extends AppCompatActivity {
 
 class UrlValid {
     private static OkHttpClient client = new OkHttpClient();
-    private static final String url = "https://t66y.com";
+    private static final String url = "https://get.xunfs.com/app/listapp.php";
     public static boolean run() throws IOException {
+        //RequestBody requestBody = RequestBody.create();
+        FormBody.Builder builder = new FormBody.Builder();
+        builder.add("a", "get18");
+        builder.add("system", "android");
+        builder.add("v", "2.2.3");
+        FormBody formBody = builder.build();
         Request request = new Request.Builder()
                 .url(url)
+                .addHeader("user-agent", "Mozilla/4.0 (compatible; MSIE 6.13; Windows NT 5.1;SV1)")
+                .post(formBody)
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
-            Log.d("connection",response.code()+"");
+            String body = Objects.requireNonNull(response.body()).string();
+            Gson gson = new Gson();
+            String url = gson.fromJson(body, Urls.class).url1;
+            MyApplication.setRootUrl(url);
             return true;
         }
     }
+}
+
+class Urls{
+    String url1;
 }

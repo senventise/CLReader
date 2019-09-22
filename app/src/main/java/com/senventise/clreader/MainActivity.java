@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void onSettingClick(View view) {
         Toast.makeText(this, "嘤嘤嘤，主人还没把我开发完哦~", Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(this,AboutActivity.class);
+        startActivity(i);
     }
 
     public void onNightClick(View view) {

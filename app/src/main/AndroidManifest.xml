@@ -11,22 +11,29 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".AboutActivity"
+            android:theme="@style/AppTheme.About.Day" />
         <activity android:name=".HistoryActivity" />
         <activity android:name=".FavoritesActivity" />
         <activity android:name=".PostActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https"
+
+                <data
                     android:host="www.t66y.com"
-                    android:pathPrefix="/htm_"/>
+                    android:pathPrefix="/htm_"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
         <activity android:name=".PostListActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

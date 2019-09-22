@@ -49,4 +49,10 @@
         <item name="nightMode">@drawable/sun</item>
     </style>
 
+    <style name="AppTheme.About.Day" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
 </resources>

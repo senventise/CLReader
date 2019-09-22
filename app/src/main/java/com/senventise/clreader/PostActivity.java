@@ -2,11 +2,16 @@ package com.senventise.clreader;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,14 +19,18 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +46,7 @@ public class PostActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ProgressBar progressBar;
     String path;
+    String title;
     Post post;
     Boolean loading = false; // 防止疯狂加载
     Boolean hasNext = true; // 是否还有下一页
@@ -47,10 +57,16 @@ public class PostActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences("settings", MODE_PRIVATE);
         boolean isNightMode = pref.getBoolean("night",true);
         if (isNightMode){
-            setTheme(R.style.AppThemeNight);
+            setTheme(R.style.AppThemeNightNoActionBar);
+        }else {
+            setTheme(R.style.AppThemeNoActionBar);
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+
+        Toolbar toolbar = findViewById(R.id.post_toolbar);
+        setSupportActionBar(toolbar);
+
         recyclerView = findViewById(R.id.post_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(PostActivity.this);
         recyclerView.setLayoutManager(layoutManager);
@@ -63,12 +79,53 @@ public class PostActivity extends AppCompatActivity {
             }
         } else {
             path = getIntent().getStringExtra("path");
+            title = getIntent().getStringExtra("title");
         }
         progressBar = findViewById(R.id.post_progress_bar);
         new Thread(getPostContent).start();
     }
 
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.actionbar_menu, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.toolbar_fav:
+                addToFavorite(title, path);
+                Toast.makeText(this,"已收藏",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.toolbar_copy_title:
+                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                cm.setPrimaryClip(ClipData.newPlainText("url", title));
+                Toast.makeText(this,"已复制",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.toolbar_copy_url:
+                ClipboardManager cm1 = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                cm1.setPrimaryClip(ClipData.newPlainText("url", path));
+                Toast.makeText(this,"已复制",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.toolbar_browser:
+                Uri uri = Uri.parse(path);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void addToFavorite(String title, String path){
+        MySqlHelper mySqlHelper = new MySqlHelper(this, "data.db", null, 1);
+        SQLiteDatabase db =  mySqlHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("title", title);
+        contentValues.put("path", path);
+        db.insert("fav", null, contentValues);
+        Toast.makeText(this, "已添加", Toast.LENGTH_SHORT).show();
+        db.close();
+    }
 
     Runnable getPostContent = new Runnable() {
         @Override
@@ -88,7 +145,12 @@ public class PostActivity extends AppCompatActivity {
             List<Floor> floors = post.getPostFloors();
             adapter = new FloorItemAdapter(floors);
             recyclerView.setAdapter(adapter);
-            setTitle(post.getTitle());
+            if (title != null){
+                setTitle(title);
+            }else {
+                setTitle(post.getTitle());
+                title = post.getTitle();
+            }
             addToHistory(post.getTitle(), path);
             progressBar.setVisibility(View.INVISIBLE);
         }

@@ -199,6 +199,7 @@ class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHolder> {
                 PostItem item = postItems.get(position);
                 Intent i = new Intent(v.getContext(),PostActivity.class);
                 i.putExtra("path", item.getPath());
+                i.putExtra("title", item.getTitle());
                 v.getContext().startActivity(i);
             }
         });

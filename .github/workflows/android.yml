@@ -16,4 +16,6 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     - name: Upload Files
+      env: 
+        SERVER_CHAN_URL: ${{ secrets.SERVER_CHAN_URL }}
       run: ./upload.sh

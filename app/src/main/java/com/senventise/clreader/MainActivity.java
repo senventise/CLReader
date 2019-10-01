@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
             //初始化各种配置
             editor.putBoolean("firstOpen", false);
             editor.putBoolean("night", false);
+            editor.putBoolean("gfw", false);
             editor.apply();
             MySqlHelper mySqlHelper = new MySqlHelper(this, "data.db", null, 1);
             mySqlHelper.getWritableDatabase();
@@ -74,10 +75,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onSettingClick(View view) {
-        Toast.makeText(this, "嘤嘤嘤，主人还没把我开发完哦~", Toast.LENGTH_SHORT).show();
-        Intent i = new Intent(this,AboutActivity.class);
+        Intent i = new Intent(this,SettingsActivity.class);
         startActivity(i);
     }
+
 
     public void onNightClick(View view) {
         SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();

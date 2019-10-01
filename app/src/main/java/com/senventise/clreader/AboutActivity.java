@@ -34,7 +34,7 @@ public class AboutActivity extends AbsAboutActivity {
     @Override
     protected void onItemsCreated(@NonNull List<Object> items) {
         items.add(new Category("介绍"));
-        items.add(new Card("一款功能丰富的开源草榴社区第三方客户端\n" +
+        items.add(new Card("一款开源草榴社区第三方客户端\n" +
                 "Github:https://www.github.com/senventise/clreader"));
 
         items.add(new Category("开发者"));

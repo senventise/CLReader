@@ -38,6 +38,7 @@ public class HistoryActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+        setTitle("历史记录");
         recyclerView = findViewById(R.id.history_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -121,7 +122,7 @@ class HistoryItemAdapter extends RecyclerView.Adapter<HistoryItemAdapter.ViewHol
                 dialog.setTitle("确认删除");
                 dialog.setMessage("是否要删除 \"" + item.getTitle() + "\"?");
                 dialog.setCancelable(false);
-                dialog.setPositiveButton("是", new DialogInterface.OnClickListener() {
+                dialog.setPositiveButton("删除", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         MySqlHelper mySqlHelper = new MySqlHelper(MyApplication.getInstance(), "data.db", null, 1);
@@ -131,7 +132,7 @@ class HistoryItemAdapter extends RecyclerView.Adapter<HistoryItemAdapter.ViewHol
                         database.close();
                     }
                 });
-                dialog.setNegativeButton("否", new DialogInterface.OnClickListener() {
+                dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 

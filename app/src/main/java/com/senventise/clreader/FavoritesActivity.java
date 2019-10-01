@@ -45,9 +45,17 @@ public class FavoritesActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
+        setTitle("收藏夹");
         recyclerView = findViewById(R.id.favorites_list_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(FavoritesActivity.this);
         recyclerView.setLayoutManager(layoutManager);
+        FavoriteItemAdapter adapter = new FavoriteItemAdapter(loadFav());
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
         FavoriteItemAdapter adapter = new FavoriteItemAdapter(loadFav());
         recyclerView.setAdapter(adapter);
     }
@@ -82,7 +90,7 @@ public class FavoritesActivity extends AppCompatActivity {
         dialog.setTitle("确认删除");
         dialog.setMessage("是否要删除 \"" + currentTitle + "\"?");
         dialog.setCancelable(false);
-        dialog.setPositiveButton("是", new DialogInterface.OnClickListener() {
+        dialog.setPositiveButton("删除", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 MySqlHelper mySqlHelper = new MySqlHelper(MyApplication.getInstance(), "data.db", null, 1);
@@ -94,7 +102,7 @@ public class FavoritesActivity extends AppCompatActivity {
                 database.close();
             }
         });
-        dialog.setNegativeButton("否", new DialogInterface.OnClickListener() {
+        dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 

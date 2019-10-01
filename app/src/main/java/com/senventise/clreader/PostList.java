@@ -1,5 +1,7 @@
 package com.senventise.clreader;
 
+import android.content.SharedPreferences;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -8,16 +10,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+
 class PostList{
-    static final String CRWX = "https://www.t66y.com/thread0806.php?fid=20&page=";
-    static final String JSTL = "https://www.t66y.com/thread0806.php?fid=7&page=";
-    static final String XSDDWM = "https://www.t66y.com/thread0806.php?fid=8&page=";
-    static final String DGEDQZ = "https://www.t66y.com/thread0806.php?fid=16&page=";
+    static final String CRWX = "https://{root}/thread0806.php?fid=20&page=";
+    static final String JSTL = "https://{root}/thread0806.php?fid=7&page=";
+    static final String XSDDWM = "https://{root}/thread0806.php?fid=8&page=";
+    static final String DGEDQZ = "https://{root}/thread0806.php?fid=16&page=";
     private int currentPage = 0;
     private String url;
 
     public PostList(String url){
-        this.url = url;
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("com.senventise.clreader_preferences", MODE_PRIVATE);
+        boolean gfw = sharedPreferences.getBoolean("gfw", true);
+        if (!gfw) {
+            MyApplication.setRootUrl("www.t66y.com");
+        }
+        this.url = url.replace("{root}", MyApplication.getRootUrl());
     }
 
     public List<PostItem> getPostList(int page){

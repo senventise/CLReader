@@ -7,14 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -30,7 +27,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +37,9 @@ import com.squareup.picasso.Target;
 
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
+
+import static com.senventise.clreader.Utils.DatabaseUtils.addToFav;
+import static com.senventise.clreader.Utils.DatabaseUtils.addToHistory;
 
 public class PostActivity extends AppCompatActivity {
     RecyclerView recyclerView;
@@ -81,6 +80,9 @@ public class PostActivity extends AppCompatActivity {
             path = getIntent().getStringExtra("path");
             title = getIntent().getStringExtra("title");
         }
+        if (path != null) {
+            path = path.replace("{root}", MyApplication.getRootUrl());
+        }
         progressBar = findViewById(R.id.post_progress_bar);
         new Thread(getPostContent).start();
     }
@@ -94,7 +96,7 @@ public class PostActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.toolbar_fav:
-                addToFavorite(title, path);
+                addToFav(title, path);
                 Toast.makeText(this,"已收藏",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.toolbar_copy_title:
@@ -114,17 +116,6 @@ public class PostActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void addToFavorite(String title, String path){
-        MySqlHelper mySqlHelper = new MySqlHelper(this, "data.db", null, 1);
-        SQLiteDatabase db =  mySqlHelper.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("title", title);
-        contentValues.put("path", path);
-        db.insert("fav", null, contentValues);
-        Toast.makeText(this, "已添加", Toast.LENGTH_SHORT).show();
-        db.close();
     }
 
     Runnable getPostContent = new Runnable() {
@@ -265,24 +256,6 @@ public class PostActivity extends AppCompatActivity {
             }
 
         }
-    }
-
-    private void addToHistory(String title, String path){
-        deleteExistHistory(path);
-        MySqlHelper mySqlHelper = new MySqlHelper(this, "data.db", null, 1);
-        SQLiteDatabase db =  mySqlHelper.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("title", title);
-        contentValues.put("path", path);
-        db.insert("history", null, contentValues);
-        db.close();
-    }
-
-    private void deleteExistHistory(String path){
-        MySqlHelper mySqlHelper = new MySqlHelper(this, "data.db", null, 1);
-        SQLiteDatabase db = mySqlHelper.getWritableDatabase();
-        db.delete("history", "path=?",new String[]{path});
-        db.close();
     }
 
 }

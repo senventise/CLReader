@@ -28,6 +28,8 @@ import android.widget.Toast;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
+import static com.senventise.clreader.Utils.DatabaseUtils.addToFav;
+
 
 public class PostListActivity extends AppCompatActivity {
 
@@ -90,19 +92,8 @@ public class PostListActivity extends AppCompatActivity {
     }
 
     public boolean onMenuAddToFavoriteClick(MenuItem item){
-        addToFavorite(currentTitle, currentPath);
+        addToFav(currentTitle, currentPath);
         return false;
-    }
-
-    private void addToFavorite(String title, String path){
-        MySqlHelper mySqlHelper = new MySqlHelper(this, "data.db", null, 1);
-        SQLiteDatabase db =  mySqlHelper.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("title", title);
-        contentValues.put("path", path);
-        db.insert("fav", null, contentValues);
-        Toast.makeText(this, "已添加", Toast.LENGTH_SHORT).show();
-        db.close();
     }
 
     // 设置监听器

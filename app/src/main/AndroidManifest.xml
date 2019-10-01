@@ -12,6 +12,9 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
+        <activity
             android:name=".AboutActivity"
             android:theme="@style/AppTheme.About.Day" />
         <activity android:name=".HistoryActivity" />

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/mainBackground"
-    tools:context=".MainActivity">
+    android:background="?attr/mainBackground">
+
 
     <TextView
         android:id="@+id/textView"
@@ -30,7 +32,7 @@
         android:layout_marginTop="48dp"
         android:layout_marginEnd="30dp"
         app:cardBackgroundColor="?attr/backgroundColor"
-        app:cardCornerRadius="6dp"
+        app:cardCornerRadius="3dp"
         app:cardDesp="草榴文學區 歡迎各位發表"
         app:cardTitle="成人文学交流区"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,7 +48,7 @@
         android:layout_height="80dp"
         android:layout_marginTop="16dp"
         app:cardBackgroundColor="?attr/backgroundColor"
-        app:cardCornerRadius="6dp"
+        app:cardCornerRadius="3dp"
         app:cardDesp="日常生活 興趣交流 時事經濟 求助求檔 會員閑談吹水區"
         app:cardTitle="技术讨论区"
         app:layout_constraintEnd_toEndOf="@+id/MCardview"
@@ -61,7 +63,7 @@
         android:layout_height="80dp"
         android:layout_marginTop="16dp"
         app:cardBackgroundColor="?attr/backgroundColor"
-        app:cardCornerRadius="6dp"
+        app:cardCornerRadius="3dp"
         app:cardDesp="你收藏的内容都在这里哒~"
         app:cardTitle="收藏夹"
         app:layout_constraintEnd_toEndOf="@+id/MCardview2"
@@ -75,7 +77,7 @@
         android:layout_height="80dp"
         android:layout_marginTop="16dp"
         app:cardBackgroundColor="?attr/backgroundColor"
-        app:cardCornerRadius="6dp"
+        app:cardCornerRadius="3dp"
         app:cardDesp="好多羞羞的东西呀~"
         app:cardTitle="历史记录"
         app:layout_constraintEnd_toEndOf="@+id/MCardview3"
@@ -89,12 +91,13 @@
         android:layout_height="80dp"
         android:layout_marginTop="16dp"
         app:cardBackgroundColor="?attr/backgroundColor"
-        app:cardCornerRadius="6dp"
+        app:cardCornerRadius="3dp"
         app:cardDesp="快来调教我吧~"
         app:cardTitle="设置"
         app:layout_constraintEnd_toEndOf="@+id/MCardview4"
         app:layout_constraintStart_toStartOf="@+id/MCardview4"
         app:layout_constraintTop_toBottomOf="@+id/MCardview4" />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         app:backgroundTint="#FFFFFFFF"

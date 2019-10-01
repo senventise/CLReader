@@ -13,7 +13,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="设置"></activity>
         <activity
             android:name=".AboutActivity"
             android:theme="@style/AppTheme.About.Day" />

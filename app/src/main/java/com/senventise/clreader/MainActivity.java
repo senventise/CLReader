@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
+import com.wuyr.rippleanimation.RippleAnimation;
 
 
 
@@ -84,11 +85,13 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = getSharedPreferences("settings", MODE_PRIVATE).edit();
         if (pref.getBoolean("night", false)) {
             editor.putBoolean("night", false);
+			RippleAnimation.create(view).setDuration(900).start();
             setTheme(R.style.AppTheme);
             setContentView(R.layout.activity_main);
             Toast.makeText(getApplicationContext(),"夜间模式已关闭",Toast.LENGTH_SHORT).show();
         }else {
             editor.putBoolean("night", true);
+			RippleAnimation.create(view).setDuration(900).start();
             setTheme(R.style.AppThemeNight);
             setContentView(R.layout.activity_main);
             Toast.makeText(getApplicationContext(),"夜间模式已打开",Toast.LENGTH_SHORT).show();

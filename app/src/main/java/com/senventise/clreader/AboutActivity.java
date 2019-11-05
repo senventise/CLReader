@@ -61,6 +61,8 @@ public class AboutActivity extends AbsAboutActivity {
                 "https://jsoup.org/"));
         items.add(new License("material","Google",License.APACHE_2,
                 "https://source.android.com/"));
+        items.add(new License("RippleAnimation","wuyr",License.APACHE_2,
+		        "https://github.com/wuyr/RippleAnimation"));
     }
 
     @Override

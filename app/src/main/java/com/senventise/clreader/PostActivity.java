@@ -112,6 +112,7 @@ public class PostActivity extends AppCompatActivity {
                 }else{
                     deleteExistFav(path.replace(MyApplication.getRootUrl(), "{root}"));
                     Toast.makeText(this, "已取消收藏", Toast.LENGTH_SHORT).show();
+                    item.setTitle("收藏");
                 }
                 break;
             case R.id.toolbar_copy_title:
@@ -152,12 +153,16 @@ public class PostActivity extends AppCompatActivity {
             adapter = new FloorItemAdapter(floors);
             recyclerView.setAdapter(adapter);
             if (title != null){
+                title = title.replace(" 草榴社區 - t66y.com", "");
+                title = title.replaceAll(" - .+ \\|", "");
                 setTitle(title);
             }else {
-                setTitle(post.getTitle());
                 title = post.getTitle();
+                title = title.replace(" 草榴社區 - t66y.com", "");
+                title = title.replaceAll(" - .+ \\|", "");
+                setTitle(title);
             }
-            addToHistory(post.getTitle(), path);
+            addToHistory(title, path);
             progressBar.setVisibility(View.INVISIBLE);
         }
     };

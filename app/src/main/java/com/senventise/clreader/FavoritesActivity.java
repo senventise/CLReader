@@ -33,8 +33,10 @@ import java.util.List;
 public class FavoritesActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
+    FavoriteItemAdapter adapter;
     static String currentPath;
     static String currentTitle;
+    static int r_position;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // 是否为夜间模式
@@ -49,7 +51,7 @@ public class FavoritesActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.favorites_list_recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(FavoritesActivity.this);
         recyclerView.setLayoutManager(layoutManager);
-        FavoriteItemAdapter adapter = new FavoriteItemAdapter(loadFav());
+        adapter = new FavoriteItemAdapter(loadFav());
         recyclerView.setAdapter(adapter);
     }
 
@@ -58,6 +60,7 @@ public class FavoritesActivity extends AppCompatActivity {
         super.onWindowFocusChanged(hasFocus);
         FavoriteItemAdapter adapter = new FavoriteItemAdapter(loadFav());
         recyclerView.setAdapter(adapter);
+        recyclerView.scrollToPosition(r_position);
     }
 
     private List<FavItem> loadFav(){
@@ -95,7 +98,10 @@ public class FavoritesActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 MySqlHelper mySqlHelper = new MySqlHelper(MyApplication.getInstance(), "data.db", null, 1);
                 SQLiteDatabase database = mySqlHelper.getWritableDatabase();
-                database.delete("fav", "path=?", new String[]{currentPath});
+                database.delete(
+                        "fav",
+                        "path=?",
+                         new String[]{currentPath.replace(MyApplication.getRootUrl(), "{root}")});
                 Toast.makeText(MyApplication.getInstance(),"已删除",Toast.LENGTH_SHORT).show();
                 FavoriteItemAdapter adapter = new FavoriteItemAdapter(loadFav());
                 recyclerView.setAdapter(adapter);
@@ -118,7 +124,7 @@ class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapter.ViewH
     private List<FavItem> favItems;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
-        View favItemView;
+        View favItemView;int position;
         TextView title;
 
         public ViewHolder(View view){
@@ -146,6 +152,7 @@ class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapter.ViewH
                 Intent i = new Intent(v.getContext(),PostActivity.class);
                 i.putExtra("path", item.getPath());
                 v.getContext().startActivity(i);
+                FavoritesActivity.r_position = position;
             }
         });
         // 长按
@@ -159,6 +166,7 @@ class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapter.ViewH
                 menuInflater.inflate(R.menu.fav_popup_menu,popupMenu.getMenu());
                 FavoritesActivity.currentPath = item.getPath().replace("{root}", MyApplication.getRootUrl());
                 FavoritesActivity.currentTitle = item.getTitle();
+                FavoritesActivity.r_position = position;
                 popupMenu.show();
                 return true;
             }

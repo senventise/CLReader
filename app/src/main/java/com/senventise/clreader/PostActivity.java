@@ -39,6 +39,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import static com.senventise.clreader.Utils.DatabaseUtils.addToFav;
+import static com.senventise.clreader.Utils.DatabaseUtils.findInFav;
+import static com.senventise.clreader.Utils.DatabaseUtils.deleteExistFav;
 import static com.senventise.clreader.Utils.DatabaseUtils.addToHistory;
 
 public class PostActivity extends AppCompatActivity {
@@ -87,6 +89,14 @@ public class PostActivity extends AppCompatActivity {
         new Thread(getPostContent).start();
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (findInFav(path.replace(MyApplication.getRootUrl(), "{root}"))) {
+            menu.findItem(R.id.toolbar_fav).setTitle("取消收藏");
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.actionbar_menu, menu);
         return true;
@@ -96,8 +106,13 @@ public class PostActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.toolbar_fav:
-                addToFav(title, path);
-                Toast.makeText(this,"已收藏",Toast.LENGTH_SHORT).show();
+                if (item.getTitle().equals("收藏")) {
+                    addToFav(title, path.replace(MyApplication.getRootUrl(), "{root}"));
+                    Toast.makeText(this, "已收藏", Toast.LENGTH_SHORT).show();
+                }else{
+                    deleteExistFav(path.replace(MyApplication.getRootUrl(), "{root}"));
+                    Toast.makeText(this, "已取消收藏", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.toolbar_copy_title:
                 ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);

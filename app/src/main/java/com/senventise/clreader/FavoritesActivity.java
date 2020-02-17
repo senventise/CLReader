@@ -157,7 +157,7 @@ class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapter.ViewH
                 PopupMenu popupMenu = new PopupMenu(view.getContext(),view);
                 MenuInflater menuInflater = popupMenu.getMenuInflater();
                 menuInflater.inflate(R.menu.fav_popup_menu,popupMenu.getMenu());
-                FavoritesActivity.currentPath = item.getPath();
+                FavoritesActivity.currentPath = item.getPath().replace("{root}", MyApplication.getRootUrl());
                 FavoritesActivity.currentTitle = item.getTitle();
                 popupMenu.show();
                 return true;

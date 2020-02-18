@@ -8,8 +8,8 @@
 
     <TextView
         android:maxLines="2"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="12dp"
         android:textSize="16sp"
         android:id="@+id/post_item_title"
         android:textColor="?attr/textColor"
@@ -27,7 +27,7 @@
 
         <TextView
             android:textColor="?attr/textColor"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="12dp"
             android:textSize="12sp"
             android:id="@+id/post_item_author"
             android:layout_width="wrap_content"
@@ -45,7 +45,8 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <View
-        android:layout_marginTop="10dp"
+        android:visibility="invisible"
+        android:layout_marginTop="12dp"
         android:background="@color/bitGray"
         android:layout_width="match_parent"
         android:layout_height="0.4dp"></View>

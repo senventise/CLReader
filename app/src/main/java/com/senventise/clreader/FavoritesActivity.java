@@ -55,14 +55,6 @@ public class FavoritesActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        FavoriteItemAdapter adapter = new FavoriteItemAdapter(loadFav());
-        recyclerView.setAdapter(adapter);
-        recyclerView.scrollToPosition(r_position);
-    }
-
     private List<FavItem> loadFav(){
         List<FavItem> items = new ArrayList<>();
         MySqlHelper mySqlHelper = new MySqlHelper(this, "data.db", null, 1);
@@ -102,10 +94,9 @@ public class FavoritesActivity extends AppCompatActivity {
                         "fav",
                         "path=?",
                          new String[]{currentPath.replace(MyApplication.getRootUrl(), "{root}")});
-                Toast.makeText(MyApplication.getInstance(),"已删除",Toast.LENGTH_SHORT).show();
-                FavoriteItemAdapter adapter = new FavoriteItemAdapter(loadFav());
-                recyclerView.setAdapter(adapter);
                 database.close();
+                Toast.makeText(MyApplication.getInstance(),"已删除",Toast.LENGTH_SHORT).show();
+                adapter.removeItem(r_position);
             }
         });
         dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -117,6 +108,15 @@ public class FavoritesActivity extends AppCompatActivity {
         dialog.show();
         return false;
     }
+
+    @Override
+    public void onBackPressed() {
+        System.out.println("Back");
+        System.out.println("FAV:"+FavoritesActivity.r_position);
+        FavoritesActivity.r_position = 0;
+        this.finish();
+        super.onBackPressed();
+    }
 }
 
 
@@ -124,7 +124,7 @@ class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapter.ViewH
     private List<FavItem> favItems;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
-        View favItemView;int position;
+        View favItemView;
         TextView title;
 
         public ViewHolder(View view){
@@ -184,6 +184,13 @@ class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapter.ViewH
     public int getItemCount() {
         return favItems.size();
     }
+
+    public void removeItem(int position){
+        favItems.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position,getItemCount());
+    }
+
 
 }
 

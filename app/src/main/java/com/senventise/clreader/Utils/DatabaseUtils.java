@@ -50,6 +50,25 @@ public class DatabaseUtils {
         return false;
     }
 
+    // 查找是否已在历史记录中
+    public static boolean findInHistory(String path){
+        MySqlHelper mySqlHelper = new MySqlHelper(MyApplication.getInstance(), "data.db", null, 1);
+        SQLiteDatabase db = mySqlHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from history", null);
+        if (cursor.moveToFirst()){
+            do {
+                if(path.equals(cursor.getString(cursor.getColumnIndex("path")))){
+                    cursor.close();
+                    db.close();
+                    return true;
+                }
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return false;
+    }
+
     public static void addToHistory(String title, String path){
         MySqlHelper mySqlHelper = new MySqlHelper(MyApplication.getInstance(), "data.db", null, 1);
         SQLiteDatabase db =  mySqlHelper.getWritableDatabase();

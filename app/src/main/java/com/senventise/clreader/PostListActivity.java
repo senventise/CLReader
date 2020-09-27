@@ -2,6 +2,7 @@ package com.senventise.clreader;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
@@ -10,6 +11,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,11 +29,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import static com.senventise.clreader.Utils.DatabaseUtils.addToFav;
+import static com.senventise.clreader.Utils.DatabaseUtils.findInFav;
+import static com.senventise.clreader.Utils.DatabaseUtils.findInHistory;
 
 
 public class PostListActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
+    ConstraintLayout constraintLayout;
     PostList pl;
     int page = 1;
     PostItemAdapter adapter;
@@ -72,7 +77,14 @@ public class PostListActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),"加载中",Toast.LENGTH_SHORT).show();
         new Thread(networkTask).start();
         setListeners();
-        // TODO:下拉刷新
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if(adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     public boolean onMenuUrlCopyClick(MenuItem item){
@@ -112,6 +124,7 @@ public class PostListActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     @SuppressLint("HandlerLeak")
@@ -207,6 +220,7 @@ class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHolder> {
                 return true;
             }
         });
+
         return holder;
     }
 
@@ -216,6 +230,13 @@ class PostItemAdapter extends RecyclerView.Adapter<PostItemAdapter.ViewHolder> {
         holder.title.setText(postItem.getTitle());
         holder.author.setText(postItem.getAuthor());
         holder.time.setText(postItem.getTime());
+        PostItem item = postItems.get(position);
+        String path = item.getPath();
+        if (findInHistory(path.replace(MyApplication.getRootUrl(), "{root}"))) {
+            holder.title.setTextColor(Color.LTGRAY);
+            holder.author.setTextColor(Color.LTGRAY);
+            holder.time.setTextColor(Color.LTGRAY);
+        }
     }
 
     @Override

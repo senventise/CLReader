@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -39,6 +40,15 @@ public class SplashActivity extends AppCompatActivity {
 
     private void init(){
         textView = findViewById(R.id.splash_url_test);
+        textView.setLongClickable(true);
+        textView.setOnLongClickListener(new View.OnLongClickListener(){
+
+            @Override
+            public boolean onLongClick(View view) {
+                jumpToMain();
+                return false;
+            }
+        });
     }
 
     @SuppressLint("HandlerLeak")

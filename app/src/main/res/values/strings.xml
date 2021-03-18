@@ -8,5 +8,13 @@
     <string name="nightMode">夜间模式</string>
     <string name="favorite">收藏夹</string>
     <string name="history">历史记录</string>
+    <string name="dot">•</string>
+    <string name="about">关于</string>
+    <string name="others">其他</string>
+    <string name="bypass_gfw">使用免翻地址</string>
+    <string name="network_settings">网络设置</string>
+    <string name="enable_pass">开启密码</string>
+    <string name="security_settings">安全设置</string>
+    <string name="set_pass">设置密码</string>
 
 </resources>

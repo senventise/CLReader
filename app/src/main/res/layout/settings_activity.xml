@@ -1,20 +1,50 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/mainBackground">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="网络设置"
+        android:text="@string/security_settings"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/enable_pass"
+        android:textColor="?attr/textColor"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/textView1"
+        app:layout_constraintTop_toBottomOf="@+id/textView1" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_pass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewPass"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textViewPass" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/network_settings"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/textView3"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewPass" />
 
     <TextView
         android:id="@+id/textView3"
@@ -22,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:text="使用免翻地址"
+        android:text="@string/bypass_gfw"
         android:textColor="?attr/textColor"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="其他"
+        android:text="@string/others"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/textView3"
@@ -60,7 +90,7 @@
         android:focusable="true"
         android:onClick="onAboutClick"
         android:background="@drawable/setting_item_touch_background"
-        android:text="关于"
+        android:text="@string/about"
         android:textColor="?attr/textColor"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/textView4"

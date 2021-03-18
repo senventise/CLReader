@@ -16,6 +16,9 @@ public class MyApplication extends Application {
     }
 
     public static String getRootUrl() {
+        if (rootUrl == null){
+            System.exit(0);
+        }
         return rootUrl;
     }
 

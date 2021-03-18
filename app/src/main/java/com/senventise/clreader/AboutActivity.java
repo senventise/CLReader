@@ -63,6 +63,8 @@ public class AboutActivity extends AbsAboutActivity {
                 "https://source.android.com/"));
         items.add(new License("RippleAnimation","wuyr",License.APACHE_2,
 		        "https://github.com/wuyr/RippleAnimation"));
+        items.add(new License("PasscodeView","hanks-zyh" ,License.APACHE_2,
+                "https://github.com/hanks-zyh/PasscodeView"));
     }
 
     @Override
